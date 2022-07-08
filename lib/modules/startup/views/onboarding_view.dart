@@ -208,14 +208,16 @@ class Constants {
   static const String sliderHeading_4 = "News";
   static const String sliderHeading_5 = "Regulation";
 
-  static const String sliderDescription_1 = "eOffice Keminves/BKPM menyediakan layanan Kepegawaian, Keuangan, Persuratan dan Dokumen Elektronik";
-  static const String sliderDescription_2 = "Pengisian kehadiran online yang berisi jam kehadiran, foto serta lokasi pegawai";
-  static const String sliderDescription_3 = "Pengajuan perubahan data pegawai, izin ketidakhadiran, pengajuan cuti dan perjalanan dinas";
+  static const String sliderDescription_1 =
+      "Keterangan 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+  static const String sliderDescription_2 =
+      "Keterangan 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+  static const String sliderDescription_3 =
+      "Keterangan 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
   static const String sliderDescription_4 =
-      "Membuat Naskah Dinas elektronik dengan Tanda Tangan Elektronik (TTE) bersertifikat dari Balai Sertifikasi Elektronik (BSrE)";
+      "Keterangan 4: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
   static const String sliderDescription_5 =
-      "Pegawai dapat mengakses Surat Keterangan Penghasilan (Slip Gaji) dan Surat Pemberitahuan Tahunan (SPT)";
-  static const String sliderDescription_6 = "Peminjaman Ruang Rapat, Wisma, Peralatan dan Kendaraan Dinas secara Online";
+      "Keterangan 5: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 }
 
 class SlideItem extends StatelessWidget {
@@ -250,7 +252,7 @@ class SlideItem extends StatelessWidget {
             style: const TextStyle(
               fontFamily: 'Google-Sans',
               fontWeight: FontWeight.w700,
-              fontSize: 16,
+              fontSize: 22,
             ),
           ),
         ),
@@ -266,7 +268,7 @@ class SlideItem extends StatelessWidget {
                 sliderArrayList[index].sliderSubHeading!,
                 style: const TextStyle(
                   fontFamily: 'Google-Sans',
-                  fontSize: 14.0,
+                  fontSize: 15.0,
                 ),
                 textAlign: TextAlign.center,
               ),
