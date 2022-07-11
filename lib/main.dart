@@ -10,7 +10,6 @@ import 'package:mobile/utils/themes/service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'modules/startup/views/splash_screen_view.dart';
-import 'theme_test.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -22,9 +21,9 @@ class MyHttpOverrides extends HttpOverrides {
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   await GetStorage.init();
+  WidgetsFlutterBinding.ensureInitialized();
 
   runZonedGuarded(() {
-    WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations(
       [
         DeviceOrientation.portraitUp,
@@ -60,8 +59,9 @@ class _IssiMobileState extends State<IssiMobile> {
             darkTheme: Themes.dark,
             themeMode: ThemeService().theme,
             debugShowCheckedModeBanner: false,
+            //home: const LoginView(),
             home: const SplashscreenView(),
-            //home: const TestThemeView(),
+            //home: const SignInDemo(),
           ),
         ],
       ),

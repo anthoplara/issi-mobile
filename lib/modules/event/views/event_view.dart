@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/api_response.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 
 import '../blocs/event_list_bloc.dart';
 import '../models/event_list_model.dart';
@@ -65,18 +66,7 @@ class _EventViewState extends State<EventView> {
       //appBar:
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white,
-                  Color(0xFFF3F6FB),
-                ],
-              ),
-            ),
-          ),
+          ConstantConfig().background,
           Column(
             children: [
               Expanded(
@@ -85,52 +75,53 @@ class _EventViewState extends State<EventView> {
                   physics: const BouncingScrollPhysics(),
                   slivers: [
                     SliverAppBar(
-                        backgroundColor: Colors.transparent,
-                        automaticallyImplyLeading: false,
-                        centerTitle: false,
-                        titleSpacing: 0.0,
-                        elevation: 0,
-                        title: Container(
-                          color: Colors.transparent,
-                          width: mediaSize.width,
-                          height: 54,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              right: 22,
-                            ),
-                            child: Row(
-                              children: [
-                                BouncingButtonHelper(
-                                  width: 54,
-                                  height: 54,
-                                  color: Colors.transparent,
-                                  bouncDeep: 0.9,
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 6.0,
-                                  ),
-                                  child: Text(
-                                    'Events',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 22,
-                                      fontFamily: "Google-Sans",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                      backgroundColor: Colors.transparent,
+                      automaticallyImplyLeading: false,
+                      centerTitle: false,
+                      titleSpacing: 0.0,
+                      elevation: 0,
+                      title: Container(
+                        color: Colors.transparent,
+                        width: mediaSize.width,
+                        height: 54,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16,
+                            right: 22,
                           ),
-                        )),
+                          child: Row(
+                            children: [
+                              BouncingButtonHelper(
+                                width: 54,
+                                height: 54,
+                                color: Colors.transparent,
+                                bouncDeep: 0.9,
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: const Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                  left: 6.0,
+                                ),
+                                child: Text(
+                                  'Events',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontFamily: "Google-Sans",
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     const SliverToBoxAdapter(
                       child: SizedBox(
                         height: 12,
@@ -202,7 +193,11 @@ class _EventViewState extends State<EventView> {
                                   );
                                   return Container();
                                 case Status.errror:
-                                  return const SizedBox.shrink();
+                                  if (_eventRows.isEmpty) {
+                                    return const EventItemErrorWidget();
+                                  } else {
+                                    return const SizedBox.shrink();
+                                  }
                               }
                             }
                             return Container();

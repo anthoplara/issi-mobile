@@ -6,6 +6,7 @@ import 'package:mobile/modules/news/models/news_list_model.dart';
 import 'package:mobile/modules/news/views/widgets/news_item_handler_widget.dart';
 import 'package:mobile/modules/news/views/widgets/news_item_widget.dart';
 import 'package:mobile/utils/networks/api_response.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 
 class NewsView extends StatefulWidget {
   const NewsView({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _NewsViewState extends State<NewsView> {
   int _currentPage = 1;
   bool _loadMore = true;
   bool _isLoading = false;
-  int _shimmerLength = 6;
+  int shimmerLength = 6;
   String source = 'tab';
 
   @override
@@ -62,18 +63,7 @@ class _NewsViewState extends State<NewsView> {
       //appBar:
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white,
-                  Color(0xFFF3F6FB),
-                ],
-              ),
-            ),
-          ),
+          ConstantConfig().background,
           Column(
             children: [
               Expanded(
@@ -135,7 +125,7 @@ class _NewsViewState extends State<NewsView> {
                                   return const SizedBox.shrink();
                                 case Status.loading:
                                   List<Widget> shimmer = [];
-                                  for (var i = 0; i < (_currentPage == 1 ? _shimmerLength : 1); ++i) {
+                                  for (var i = 0; i < (_currentPage == 1 ? shimmerLength : 1); ++i) {
                                     shimmer.add(const NewsItemShimmerWidget());
                                   }
                                   return Column(
@@ -182,7 +172,11 @@ class _NewsViewState extends State<NewsView> {
                                   );
                                   return Container();
                                 case Status.errror:
-                                  return const SizedBox.shrink();
+                                  if (_newsRows.isEmpty) {
+                                    return const NewsItemErrorWidget();
+                                  } else {
+                                    return const SizedBox.shrink();
+                                  }
                               }
                             }
                             return Container();

@@ -66,7 +66,7 @@ class _ExploreNewsWidgetState extends State<ExploreNewsWidget> {
                   borderRadius: BorderRadius.circular(30.0),
                   bouncDeep: 0.2,
                   onTap: () {
-                    widget.moveToTab(2);
+                    widget.moveToTab(1);
                   },
                   child: Text(
                     'See All',

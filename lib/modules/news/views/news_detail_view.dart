@@ -6,6 +6,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 import 'package:mobile/modules/news/models/news_list_model.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NewsDetailView extends StatefulWidget {
@@ -50,18 +51,7 @@ class _NewsDetailViewState extends State<NewsDetailView> {
       extendBody: true,
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white,
-                  Color(0xFFF3F6FB),
-                ],
-              ),
-            ),
-          ),
+          ConstantConfig().background,
           SizedBox(
             child: NestedScrollView(
               physics: const BouncingScrollPhysics(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/modules/races/views/race_view.dart';
+import 'package:mobile/modules/regulation/views/regulation_view.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 
 class ExploreServiceMenuWidget extends StatelessWidget {
@@ -37,7 +38,13 @@ class ExploreServiceMenuWidget extends StatelessWidget {
               color: const Color(0xFFf0635a),
               borderRadius: BorderRadius.circular(30.0),
               bouncDeep: 0.2,
-              onTap: () => {},
+              onTap: () {
+                Get.to(
+                  const RegulationView(),
+                  transition: Transition.fadeIn,
+                  duration: const Duration(milliseconds: 400),
+                );
+              },
               child: const Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 8,

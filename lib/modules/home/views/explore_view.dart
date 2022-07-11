@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 
 import 'widgets/explore_appbar_widget.dart';
 import 'widgets/explore_banner_widget.dart';
@@ -37,18 +38,7 @@ class _ExploreViewState extends State<ExploreView> {
       backgroundColor: const Color(0xFFF3F6FB),
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white,
-                  Color(0xFFF3F6FB),
-                ],
-              ),
-            ),
-          ),
+          ConstantConfig().background,
           NestedScrollView(
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [const ExploreAppBarWidget()];

@@ -6,9 +6,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/helpers/fade_slide_delay.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
+import 'package:mobile/modules/home/views/dashboard_view.dart';
 
-import '../../home/views/dashboard_view.dart';
+import 'login_view.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key}) : super(key: key);
@@ -18,12 +20,15 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
+  final PageController _pageController = PageController(initialPage: 0);
   GetStorage localData = GetStorage();
   int _currentPage = 0;
-  final PageController _pageController = PageController(initialPage: 0);
+
+  bool _isLogged = false;
 
   @override
   void initState() {
+    _isLogged = (localData.read(KeyStorage.userId) ?? "0") == "0" ? false : true;
     super.initState();
   }
 
@@ -88,14 +93,18 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: topSliderLayout(),
+      child: Stack(
+        children: [
+          ConstantConfig().background,
+          topSliderLayout(),
+        ],
+      ),
     );
   }
   //Widget build(BuildContext context) => topSliderLayout();
 
   Widget topSliderLayout() {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
       body: Stack(
         children: [
           Stack(
@@ -125,7 +134,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               Stack(
                 alignment: AlignmentDirectional.topStart,
                 children: [
-                  _currentPage == 4
+                  _currentPage == 3
                       ? FadeSlideDelayHelper(
                           length: 0.04,
                           delay: 1000,
@@ -140,13 +149,13 @@ class _OnboardingViewState extends State<OnboardingView> {
                               onTap: () {
                                 localData.write(KeyStorage.isOnboarded, "seen");
                                 Get.offAll(
-                                  const DashboardView(),
+                                  _isLogged ? const DashboardView() : const LoginView(),
                                   transition: Transition.fadeIn,
                                   duration: const Duration(milliseconds: 1000),
                                 );
                               },
                               child: const Text(
-                                "Masuk",
+                                "Get Started",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: "Google-Sans",
@@ -191,34 +200,30 @@ class Slider {
 }
 
 final sliderArrayList = [
-  Slider(sliderImage: 'assets/images/logo_icon.png', sliderHeading: Constants.sliderHeading_1, sliderSubHeading: Constants.sliderDescription_1),
-  Slider(sliderImage: 'assets/images/logo_icon.png', sliderHeading: Constants.sliderHeading_2, sliderSubHeading: Constants.sliderDescription_2),
-  Slider(sliderImage: 'assets/images/logo_icon.png', sliderHeading: Constants.sliderHeading_3, sliderSubHeading: Constants.sliderDescription_3),
-  Slider(sliderImage: 'assets/images/logo_icon.png', sliderHeading: Constants.sliderHeading_4, sliderSubHeading: Constants.sliderDescription_4),
-  Slider(sliderImage: 'assets/images/logo_icon.png', sliderHeading: Constants.sliderHeading_5, sliderSubHeading: Constants.sliderDescription_5),
+  Slider(
+    sliderImage: 'assets/images/onboard/section1.png',
+    sliderHeading: "Hi, Sobat ISSI!",
+    sliderSubHeading: "Mengenal ISSI lebih dekat dan aktif terlibat dalam olahraga sepeda agar tetap sehat. Semua dalam genggaman anda.",
+  ),
+  Slider(
+    sliderImage: 'assets/images/onboard/section2.png',
+    sliderHeading: "Ikuti Events & Races",
+    sliderSubHeading:
+        "Membangun pertemanan yang lebih luas dengan mengikuti events dan bangun prestasi melalui kompetisi-kompetisi bertaraf nasional dan internasional.",
+  ),
+  Slider(
+    sliderImage: 'assets/images/onboard/section3.png',
+    sliderHeading: "Menjadi yang paling update",
+    sliderSubHeading:
+        "Sobat ISSI akan selalu disuguhkan terhadap informasi dan tips-tips terkini. tidak perlu khawatir ketinggalan terhadap tren olahraga sepeda terkini.",
+  ),
+  Slider(
+    sliderImage: 'assets/images/onboard/section4.png',
+    sliderHeading: "Ketahui aturan bersepeda",
+    sliderSubHeading:
+        "Baik dijalan umum maupun di kompetisi, ada aturan yang berlaku agar bersepeda menjadi tertib, aman dan nyaman. Yuk, cari tahu melalui ISSI Mobile!",
+  ),
 ];
-
-class Constants {
-  static const String login = "Login";
-  static const String home = "Beranda";
-
-  static const String sliderHeading_1 = "ISSI Mobile";
-  static const String sliderHeading_2 = "Explore";
-  static const String sliderHeading_3 = "Event";
-  static const String sliderHeading_4 = "News";
-  static const String sliderHeading_5 = "Regulation";
-
-  static const String sliderDescription_1 =
-      "Keterangan 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-  static const String sliderDescription_2 =
-      "Keterangan 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-  static const String sliderDescription_3 =
-      "Keterangan 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-  static const String sliderDescription_4 =
-      "Keterangan 4: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-  static const String sliderDescription_5 =
-      "Keterangan 5: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-}
 
 class SlideItem extends StatelessWidget {
   final int index;
@@ -238,7 +243,7 @@ class SlideItem extends StatelessWidget {
               image: AssetImage(
                 sliderArrayList[index].sliderImage!,
               ),
-              width: 220.0,
+              height: 220.0,
             ),
           ),
         ),
@@ -303,7 +308,9 @@ class SlideDots extends StatelessWidget {
                 color: Colors.transparent,
                 width: 1,
               ),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(12),
+        ),
       ),
     );
   }

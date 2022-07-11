@@ -9,10 +9,19 @@ class BaseService {
   final String initial = "mobileBaseService";
   final String baseUrl = ConstantConfig().baseEndpoint;
 
+  final String loginDefault = "login_default";
+  final String loginOther = "social_media_auth";
+  final String getProfile = "profil_detail";
+
   final String getEventList = "get_event_all";
   final String getEventDetail = "get_event_detail";
   final String getRaceList = "get_event_race";
+
   final String getRaceDetail = "get_event_detail";
+  final String joinEvent = "join_event";
+
+  final String getUpcomingList = "list_upcoming_event";
+  final String getPastList = "list_past_event";
 
   final String getNewsList = "get_content";
   final String getNewsDetail = "get_content_detail";

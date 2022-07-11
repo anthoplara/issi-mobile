@@ -58,9 +58,22 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.342516576144-7ae2hmoj3t49phteovbon4jcrtah4eql</string>
+				<string>fb1446768115767156</string>
 			</array>
 		</dict>
 	</array>
 
+	<key>FacebookAppID</key>
+	<string>1446768115767156</string>
+	<key>FacebookClientToken</key>
+	<string>66cd2a39848cf9893fa827d7fa2cbc66</string>
+	<key>FacebookDisplayName</key>
+	<string>ISSI Mobile</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
+	<!-- Start of Facebook -->
 </dict>
 </plist>

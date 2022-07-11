@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/modules/event/views/widgets/fab_join_event_widget.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/api_response.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../blocs/event_detail_bloc.dart';
@@ -24,19 +26,38 @@ class EventDetailView extends StatefulWidget {
 
 class _EventDetailViewState extends State<EventDetailView> {
   EventDetailBloc eventDetailBloc = EventDetailBloc();
+
+  StreamController joinEventStream = StreamController();
+
   bool isLoading = true;
   bool allowRegister = false;
 
   @override
   void initState() {
-    eventDetailBloc.fetchResponse(widget.dataId);
+    loadData();
     super.initState();
+  }
+
+  void loadData() {
+    setState(() {
+      isLoading = true;
+      allowRegister = false;
+    });
+    eventDetailBloc.fetchResponse(widget.dataId);
   }
 
   @override
   void dispose() {
     eventDetailBloc.dispose();
     super.dispose();
+  }
+
+  void callbackJoin(String status) {
+    if (status == "1") {
+      Timer(const Duration(milliseconds: 10), () {
+        loadData();
+      });
+    }
   }
 
   @override
@@ -60,59 +81,12 @@ class _EventDetailViewState extends State<EventDetailView> {
               ),
             )
           : allowRegister
-              ? BouncingButtonHelper(
-                  width: 220,
-                  height: 54,
-                  color: const Color(0xff222222),
-                  onTap: () async {},
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Row(
-                      children: const [
-                        SizedBox(
-                          width: 32,
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              "DAFTAR",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontFamily: "Google-Sans",
-                                color: Color(0xFFFFFFFF),
-                              ),
-                            ),
-                          ),
-                        ),
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Colors.orange,
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+              ? FabJoinEventWidget(dataId: widget.dataId, callback: callbackJoin)
               : const SizedBox.shrink(),
       extendBody: true,
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white,
-                  Color(0xFFF3F6FB),
-                ],
-              ),
-            ),
-          ),
+          ConstantConfig().background,
           SizedBox(
             child: NestedScrollView(
               physics: const BouncingScrollPhysics(),
@@ -264,6 +238,10 @@ class _EventDetailViewState extends State<EventDetailView> {
       dateTop = DateFormat('d MMMM yyyy').format(dt);
     }
 
+    if (data.sudahTerdaftar == "1") {
+      _allowRegister = false;
+    }
+
     String dateBottom = "-";
     String startTimeFromServer = data.jamAwal ?? "-";
     String endTimeFromServer = data.jamAkhir ?? "-";
@@ -336,7 +314,7 @@ class _EventDetailViewState extends State<EventDetailView> {
     }
 
     Timer(
-      const Duration(milliseconds: 500),
+      const Duration(milliseconds: 10),
       () => {
         setState(() {
           isLoading = false;
@@ -425,9 +403,9 @@ class _EventDetailViewState extends State<EventDetailView> {
               const SizedBox(
                 height: 15,
               ),
-              item('timetable', dateTop, dateBottom),
-              item('location', data.lokasi ?? "-", "Lokasi"),
-              item('organization', data.organizer ?? "-", 'Organizer'),
+              eventInfoList('timetable', dateTop, dateBottom),
+              eventInfoList('location', data.lokasi ?? "-", "Lokasi"),
+              eventInfoList('organization', data.organizer ?? "-", 'Organizer'),
               const SizedBox(
                 height: 15,
               ),
@@ -839,7 +817,7 @@ class _EventDetailViewState extends State<EventDetailView> {
     );
   }
 
-  Widget item(String image, String title, String description) {
+  Widget eventInfoList(String image, String title, String description) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 12,

@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mobile/modules/home/views/dashboard_view.dart';
-import 'package:mobile/modules/startup/views/onboarding_view.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shimmer/shimmer.dart';
+
+import 'login_view.dart';
+import 'onboarding_view.dart';
 
 class SplashscreenView extends StatefulWidget {
   const SplashscreenView({Key? key}) : super(key: key);
@@ -20,20 +23,22 @@ class SplashscreenView extends StatefulWidget {
 class _SplashscreenViewState extends State<SplashscreenView> {
   GetStorage localData = GetStorage();
   bool _isShowOnboard = true;
+  bool _isLogged = false;
 
   String copyright = '';
 
   @override
   void initState() {
     getVersion();
-    _isShowOnboard = localData.read(KeyStorage.isOnboarded) == null ? true : false;
+    _isShowOnboard = (localData.read(KeyStorage.isOnboarded) ?? "") == "" ? true : false;
+    _isLogged = (localData.read(KeyStorage.userId) ?? "0") == "0" ? false : true;
     super.initState();
   }
 
   void startTime() async {
     Timer(const Duration(milliseconds: 2000), () {
       Get.offAll(
-        _isShowOnboard ? const OnboardingView() : const DashboardView(),
+        _isShowOnboard ? const OnboardingView() : (_isLogged ? const DashboardView() : const LoginView()),
         transition: Transition.fadeIn,
         duration: const Duration(milliseconds: 400),
       );
@@ -105,31 +110,57 @@ class _SplashscreenViewState extends State<SplashscreenView> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaSize = MediaQuery.of(context).size;
     var mediaPadding = MediaQuery.of(context).padding;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        backgroundColor: context.theme.backgroundColor,
         body: Stack(
           children: [
-            /* Positioned(
-              width: mediaSize.width,
-              bottom: 0,
-              child: const Center(
-                child: Image(
-                  image: AssetImage(
-                    'assets/images/cycling.gif',
+            ConstantConfig().background,
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image(
+                  image: const AssetImage(
+                    'assets/images/splashscreen.png',
                   ),
+                  width: mediaSize.width,
                 ),
+                Container(
+                  height: 100,
+                  color: const Color(0xff23232d),
+                ),
+              ],
+            ),
+            /* const Center(
+              child: Image(
+                image: AssetImage(
+                  'assets/images/logo_full.png',
+                ),
+                width: 220.0,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: mediaPadding.top + 22,
+                right: 22,
+                bottom: 22,
+                left: 22,
+              ),
+              child: const CupertinoActivityIndicator(
+                radius: 10,
               ),
             ), */
+
             Column(
               children: [
-                Expanded(
+                const Expanded(
                   child: Center(
                     child: Image(
                       image: AssetImage(
-                        Get.isDarkMode ? 'assets/images/logo_full_light.png' : 'assets/images/logo_full.png',
+                        'assets/images/logo_full.png',
                       ),
                       width: 220.0,
                     ),
@@ -141,19 +172,20 @@ class _SplashscreenViewState extends State<SplashscreenView> {
                   ),
                   child: CupertinoActivityIndicator(
                     radius: 10,
+                    color: Colors.white,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: mediaPadding.bottom + 6),
                   child: copyright == ""
                       ? Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
+                          baseColor: Colors.grey[700]!,
+                          highlightColor: Colors.grey[900]!,
                           child: Container(
                             width: 160,
-                            height: 10,
+                            height: 14,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2.0),
+                              borderRadius: BorderRadius.circular(4.0),
                               color: Colors.grey[700],
                             ),
                           ),
@@ -161,8 +193,8 @@ class _SplashscreenViewState extends State<SplashscreenView> {
                       : Text(
                           copyright,
                           style: const TextStyle(
-                            fontSize: 10,
-                            color: Color(0xFF888888),
+                            fontSize: 11,
+                            color: Color(0xFFcccccc),
                             fontFamily: "Google-Sans",
                           ),
                         ),

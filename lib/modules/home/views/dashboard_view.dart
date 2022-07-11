@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mobile/modules/event/views/event_view.dart';
+import 'package:mobile/modules/startup/views/login_view.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
+import 'package:mobile/utils/networks/key_storage.dart';
 
 import 'event_view.dart';
 import 'profile_view.dart';
@@ -38,9 +40,9 @@ class _DashboardViewState extends State<DashboardView> {
       ExploreView(
         moveToTab: _onCallbackTap,
       ),
-      const MyEventView(),
       const NewsView(),
-      const ProfileView(),
+      (localData.read(KeyStorage.userId) ?? "0") == "0" ? const LoginView() : const MyEventView(),
+      (localData.read(KeyStorage.userId) ?? "0") == "0" ? const LoginView() : const ProfileView(),
     ];
     super.initState();
   }
@@ -110,23 +112,19 @@ class _DashboardViewState extends State<DashboardView> {
               onTabSelected: _onTapped,
               items: [
                 NavBarFloatingActionButtonItemWidget(
-                  //iconData: Icons.dashboard,
-                  icon: 'compas',
+                  icon: 'explore',
                   text: 'Explore',
                 ),
                 NavBarFloatingActionButtonItemWidget(
-                  //iconData: FontAwesomeIcons.calendarDays,
-                  icon: 'calendar',
-                  text: 'My Event',
-                ),
-                NavBarFloatingActionButtonItemWidget(
-                  //iconData: FontAwesomeIcons.mapPin,
-                  icon: 'pin',
+                  icon: 'news',
                   text: 'News',
                 ),
                 NavBarFloatingActionButtonItemWidget(
-                  //iconData: FontAwesomeIcons.userDoctor,
-                  icon: 'user',
+                  icon: 'myevent',
+                  text: 'My Event',
+                ),
+                NavBarFloatingActionButtonItemWidget(
+                  icon: 'profile',
                   text: 'Profile',
                 ),
               ],

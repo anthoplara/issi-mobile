@@ -133,34 +133,33 @@ class EventItemEmptyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mediaSize = MediaQuery.of(context).size;
+    var mediaPadding = MediaQuery.of(context).padding;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300]!.withOpacity(0.4),
-              spreadRadius: 0,
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+      padding: const EdgeInsets.symmetric(horizontal: 22),
+      child: SizedBox(
+        height: mediaSize.height - mediaPadding.vertical - 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Image(
+              image: AssetImage(
+                'assets/images/handler/no_data.png',
+              ),
+              width: 200.0,
             ),
-          ],
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(
-              "Event isn't available",
+            SizedBox(
+              height: 32,
+            ),
+            Text(
+              "There's no Event",
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 16,
                 fontFamily: "Google-Sans",
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -172,34 +171,33 @@ class EventItemErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mediaSize = MediaQuery.of(context).size;
+    var mediaPadding = MediaQuery.of(context).padding;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300]!.withOpacity(0.4),
-              spreadRadius: 0,
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+      padding: const EdgeInsets.symmetric(horizontal: 22),
+      child: SizedBox(
+        height: mediaSize.height - mediaPadding.vertical - 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Image(
+              image: AssetImage(
+                'assets/images/handler/error.png',
+              ),
+              width: 200.0,
             ),
-          ],
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(
-              "Event isn't available",
+            SizedBox(
+              height: 32,
+            ),
+            Text(
+              "Something when Wrong",
               style: TextStyle(
-                color: Colors.red,
+                color: Colors.grey,
                 fontSize: 16,
                 fontFamily: "Google-Sans",
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
