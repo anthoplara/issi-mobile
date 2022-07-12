@@ -197,41 +197,81 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ),
                       const SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      top: BorderSide(
+                        color: Color(0xFFf37501).withOpacity(0.1),
+                        width: 1.0,
+                      ),
+                      bottom: BorderSide(
+                        color: Color(0xFFf37501).withOpacity(0.1),
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 22,
+                        ),
+                        itemList("Fullname", localData.read(KeyStorage.userFullName) ?? "-"),
+                        itemList("Address", localData.read(KeyStorage.userAddress) ?? "-"),
+                        itemList("Phone", localData.read(KeyStorage.userPhone) ?? "-"),
+                        itemList("Email", localData.read(KeyStorage.userEmail) ?? "-"),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Center(
+                          child: Text(
+                            'About Me',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontFamily: "Google-Sans",
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Center(
+                          child: HtmlWidget(
+                            localData.read(KeyStorage.userDescription) ?? "-",
+                            textStyle: TextStyle(
+                              fontSize: 14.0,
+                              fontFamily: "Google-Sans",
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 22,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(
                         height: 22,
-                      ),
-                      itemList("Fullname", localData.read(KeyStorage.userFullName) ?? "-"),
-                      itemList("Address", localData.read(KeyStorage.userAddress) ?? "-"),
-                      itemList("Phone", localData.read(KeyStorage.userPhone) ?? "-"),
-                      itemList("Email", localData.read(KeyStorage.userEmail) ?? "-"),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Center(
-                        child: Text(
-                          'About Me',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontFamily: "Google-Sans",
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Center(
-                        child: HtmlWidget(
-                          localData.read(KeyStorage.userDescription) ?? "-",
-                          textStyle: TextStyle(
-                            fontSize: 14.0,
-                            fontFamily: "Google-Sans",
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 56,
                       ),
                       Center(
                         child: BouncingButtonHelper(

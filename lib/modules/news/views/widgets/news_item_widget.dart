@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/modules/news/models/news_list_model.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uuid/uuid.dart';
 
 import '../news_detail_view.dart';
 
@@ -16,7 +17,6 @@ class NewsItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaSize = MediaQuery.of(context).size;
-
     String showDate = data.tglContent ?? "-";
     if (showDate != "-") {
       DateTime date = DateTime.parse("$showDate 00:00:00");
@@ -24,6 +24,8 @@ class NewsItemWidget extends StatelessWidget {
       showDate = formatter.format(date);
     }
     String image = data.images ?? "";
+
+    String heroTag = const Uuid().v4();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -35,7 +37,7 @@ class NewsItemWidget extends StatelessWidget {
           Get.to(
             NewsDetailView(
               data: data,
-              source: source,
+              heroTag: heroTag,
             ),
             transition: Transition.fadeIn,
             duration: const Duration(milliseconds: 400),
@@ -62,7 +64,7 @@ class NewsItemWidget extends StatelessWidget {
               children: [
                 image != ""
                     ? Hero(
-                        tag: 'news_${source}_${data.id}',
+                        tag: heroTag,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: SizedBox(

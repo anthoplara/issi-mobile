@@ -17,8 +17,8 @@ import '../models/event_detail_model.dart';
 class EventDetailView extends StatefulWidget {
   final String dataId;
   final String dataImage;
-  final String source;
-  const EventDetailView({Key? key, required this.dataId, required this.dataImage, required this.source}) : super(key: key);
+  final String heroTag;
+  const EventDetailView({Key? key, required this.dataId, required this.dataImage, required this.heroTag}) : super(key: key);
 
   @override
   State<EventDetailView> createState() => _EventDetailViewState();
@@ -141,7 +141,7 @@ class _EventDetailViewState extends State<EventDetailView> {
                     ),
                     flexibleSpace: FlexibleSpaceBar(
                       background: Hero(
-                        tag: 'event_${widget.source}_${widget.dataId}',
+                        tag: widget.heroTag,
                         child: CachedNetworkImage(
                           imageUrl: widget.dataImage,
                           placeholder: (context, url) {

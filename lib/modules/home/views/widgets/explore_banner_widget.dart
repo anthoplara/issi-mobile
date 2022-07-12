@@ -10,6 +10,7 @@ import 'package:mobile/modules/news/views/news_detail_view.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/api_response.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uuid/uuid.dart';
 
 class ExploreBannerWidget extends StatefulWidget {
   const ExploreBannerWidget({Key? key}) : super(key: key);
@@ -158,6 +159,7 @@ class _ExploreBannerWidgetState extends State<ExploreBannerWidget> {
   }
 
   Widget sliderItem(NewsListData data, Size mediaSize) {
+    String heroTag = const Uuid().v4();
     return BouncingButtonHelper(
       color: Colors.transparent,
       width: mediaSize.width - 44,
@@ -166,14 +168,14 @@ class _ExploreBannerWidgetState extends State<ExploreBannerWidget> {
         Get.to(
           NewsDetailView(
             data: data,
-            source: 'ban',
+            heroTag: heroTag,
           ),
           transition: Transition.fadeIn,
           duration: const Duration(milliseconds: 400),
         );
       },
       child: Hero(
-        tag: 'news_ban_${data.id}',
+        tag: heroTag,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Container(

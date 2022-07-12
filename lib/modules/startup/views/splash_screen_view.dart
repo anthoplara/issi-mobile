@@ -134,26 +134,6 @@ class _SplashscreenViewState extends State<SplashscreenView> {
                 ),
               ],
             ),
-            /* const Center(
-              child: Image(
-                image: AssetImage(
-                  'assets/images/logo_full.png',
-                ),
-                width: 220.0,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: mediaPadding.top + 22,
-                right: 22,
-                bottom: 22,
-                left: 22,
-              ),
-              child: const CupertinoActivityIndicator(
-                radius: 10,
-              ),
-            ), */
-
             Column(
               children: [
                 const Expanded(
@@ -165,6 +145,9 @@ class _SplashscreenViewState extends State<SplashscreenView> {
                       width: 220.0,
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: mediaSize.height * 0.3,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(

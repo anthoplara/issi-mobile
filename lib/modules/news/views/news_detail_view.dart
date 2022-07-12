@@ -11,8 +11,12 @@ import 'package:shimmer/shimmer.dart';
 
 class NewsDetailView extends StatefulWidget {
   final NewsListData data;
-  final String source;
-  const NewsDetailView({Key? key, required this.data, required this.source}) : super(key: key);
+  final String heroTag;
+  const NewsDetailView({
+    Key? key,
+    required this.data,
+    required this.heroTag,
+  }) : super(key: key);
 
   @override
   State<NewsDetailView> createState() => _NewsDetailViewState();
@@ -107,7 +111,7 @@ class _NewsDetailViewState extends State<NewsDetailView> {
                     flexibleSpace: FlexibleSpaceBar(
                       background: image != ""
                           ? Hero(
-                              tag: 'news_${widget.source}_${widget.data.id}',
+                              tag: widget.heroTag,
                               child: CachedNetworkImage(
                                 imageUrl: widget.data.images,
                                 placeholder: (context, url) {

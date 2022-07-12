@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/upcoming_list_model.dart';
 import '../event_detail_view.dart';
@@ -25,6 +26,8 @@ class UpcomingItemWidget extends StatelessWidget {
     }
     String image = data.images ?? "";
 
+    String heroTag = const Uuid().v4();
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: BouncingButtonHelper(
@@ -36,7 +39,7 @@ class UpcomingItemWidget extends StatelessWidget {
             EventDetailView(
               dataId: data.idEvent.toString(),
               dataImage: image,
-              source: source,
+              heroTag: heroTag,
             ),
             transition: Transition.fadeIn,
             duration: const Duration(milliseconds: 400),
@@ -63,7 +66,7 @@ class UpcomingItemWidget extends StatelessWidget {
               children: [
                 image != ""
                     ? Hero(
-                        tag: 'event_${source}_${data.idEvent}',
+                        tag: heroTag,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: SizedBox(

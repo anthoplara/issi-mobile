@@ -30,6 +30,8 @@ class _LoginViewState extends State<LoginView> {
   bool remember = false;
   bool showSocialMedia = true;
 
+  bool passwordVisible = false;
+
   String errorMessage = "";
 
   @override
@@ -258,7 +260,7 @@ class _LoginViewState extends State<LoginView> {
           SizedBox(
             height: 42,
             child: TextField(
-              obscureText: true,
+              obscureText: !passwordVisible,
               cursorHeight: 16,
               autofocus: false,
               controller: passwordController,
@@ -277,10 +279,14 @@ class _LoginViewState extends State<LoginView> {
                   color: Colors.grey,
                 ),
                 suffixIcon: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
                   splashColor: Colors.transparent,
-                  icon: const Icon(
-                    Icons.remove_red_eye_outlined,
+                  icon: Icon(
+                    passwordVisible ? Icons.remove_red_eye_outlined : Icons.remove_red_eye_sharp,
                     size: 22,
                     color: Colors.grey,
                   ),

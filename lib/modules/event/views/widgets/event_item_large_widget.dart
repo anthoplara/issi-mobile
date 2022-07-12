@@ -5,6 +5,7 @@ import 'package:mobile/modules/event/models/event_list_model.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/helpers/date_helper.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uuid/uuid.dart';
 
 import '../event_detail_view.dart';
 
@@ -76,6 +77,8 @@ class EventItemLargeWidget extends StatelessWidget {
       }
     }
 
+    String heroTag = const Uuid().v4();
+
     return Padding(
       padding: const EdgeInsets.only(right: 22.0, bottom: 22),
       child: BouncingButtonHelper(
@@ -87,7 +90,7 @@ class EventItemLargeWidget extends StatelessWidget {
             EventDetailView(
               dataId: data.id.toString(),
               dataImage: image,
-              source: source,
+              heroTag: heroTag,
             ),
             transition: Transition.fadeIn,
             duration: const Duration(milliseconds: 400),
@@ -124,7 +127,7 @@ class EventItemLargeWidget extends StatelessWidget {
                     ),
                     image != ""
                         ? Hero(
-                            tag: 'event_${source}_${data.id}',
+                            tag: heroTag,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: SizedBox(

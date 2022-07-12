@@ -16,8 +16,8 @@ import '../models/race_detail_model.dart';
 class RaceDetailView extends StatefulWidget {
   final String dataId;
   final String dataImage;
-  final String source;
-  const RaceDetailView({Key? key, required this.dataId, required this.dataImage, required this.source}) : super(key: key);
+  final String heroTag;
+  const RaceDetailView({Key? key, required this.dataId, required this.dataImage, required this.heroTag}) : super(key: key);
 
   @override
   State<RaceDetailView> createState() => _RaceDetailViewState();
@@ -157,7 +157,7 @@ class _RaceDetailViewState extends State<RaceDetailView> {
                     ),
                     flexibleSpace: FlexibleSpaceBar(
                       background: Hero(
-                        tag: 'race_${widget.source}_${widget.dataId}',
+                        tag: widget.heroTag,
                         child: CachedNetworkImage(
                           imageUrl: widget.dataImage,
                           placeholder: (context, url) {

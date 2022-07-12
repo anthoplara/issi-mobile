@@ -26,7 +26,7 @@ class _EventViewState extends State<EventView> {
   int _currentPage = 1;
   bool _loadMore = true;
   bool _isLoading = false;
-  int _shimmerLength = 6;
+  int _shimmerLength = 3;
   String source = 'tab';
 
   @override
@@ -55,6 +55,17 @@ class _EventViewState extends State<EventView> {
     super.dispose();
   }
 
+  Future<void> _refreshRandomNumbers() {
+    setState(() {
+      _currentPage = 1;
+      _loadMore = true;
+      _isLoading = false;
+      _eventRows = [];
+    });
+    loadEvent(_currentPage);
+    return Future.delayed(const Duration(milliseconds: 500), () {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var mediaSize = MediaQuery.of(context).size;
@@ -70,147 +81,151 @@ class _EventViewState extends State<EventView> {
           Column(
             children: [
               Expanded(
-                child: CustomScrollView(
-                  controller: scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    SliverAppBar(
-                      backgroundColor: Colors.transparent,
-                      automaticallyImplyLeading: false,
-                      centerTitle: false,
-                      titleSpacing: 0.0,
-                      elevation: 0,
-                      title: Container(
-                        color: Colors.transparent,
-                        width: mediaSize.width,
-                        height: 54,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 16,
-                            right: 22,
-                          ),
-                          child: Row(
-                            children: [
-                              BouncingButtonHelper(
-                                width: 54,
-                                height: 54,
-                                color: Colors.transparent,
-                                bouncDeep: 0.9,
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Text(
-                                  'Events',
-                                  style: TextStyle(
+                child: RefreshIndicator(
+                  onRefresh: _refreshRandomNumbers,
+                  displacement: 100,
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverAppBar(
+                        backgroundColor: Colors.transparent,
+                        automaticallyImplyLeading: false,
+                        centerTitle: false,
+                        titleSpacing: 0.0,
+                        elevation: 0,
+                        title: Container(
+                          color: Colors.transparent,
+                          width: mediaSize.width,
+                          height: 54,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16,
+                              right: 22,
+                            ),
+                            child: Row(
+                              children: [
+                                BouncingButtonHelper(
+                                  width: 54,
+                                  height: 54,
+                                  color: Colors.transparent,
+                                  bouncDeep: 0.9,
+                                  onTap: () {
+                                    Get.back();
+                                  },
+                                  child: const Icon(
+                                    Icons.arrow_back_ios,
                                     color: Colors.black,
-                                    fontSize: 22,
-                                    fontFamily: "Google-Sans",
                                   ),
                                 ),
-                              ),
-                            ],
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 6.0,
+                                  ),
+                                  child: Text(
+                                    'Events',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 22,
+                                      fontFamily: "Google-Sans",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 12,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        child: Column(
-                          children: List.generate(_eventRows.length, (index) {
-                            return _eventRows[index];
-                          }),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 12,
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        width: mediaSize.width,
-                        child: StreamBuilder<dynamic>(
-                          stream: eventListBloc.antDataStream,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              switch (snapshot.data!.status!) {
-                                case Status.initial:
-                                  return const SizedBox.shrink();
-                                case Status.loading:
-                                  List<Widget> shimmer = [];
-                                  for (var i = 0; i < (_currentPage == 1 ? _shimmerLength : 1); ++i) {
-                                    shimmer.add(const EventItemShimmerWidget());
-                                  }
-                                  return Column(
-                                    children: shimmer,
-                                  );
-                                case Status.completed:
-                                  EventListModel responses = snapshot.data!.data as EventListModel;
-                                  List<Widget> eventRows = [];
-                                  if (responses.data!.isNotEmpty) {
-                                    for (var item in responses.data!) {
-                                      eventRows.add(
-                                        EventItemWidget(
-                                          data: item,
-                                          source: 'tab',
-                                        ),
-                                      );
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          child: Column(
+                            children: List.generate(_eventRows.length, (index) {
+                              return _eventRows[index];
+                            }),
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          width: mediaSize.width,
+                          child: StreamBuilder<dynamic>(
+                            stream: eventListBloc.antDataStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                switch (snapshot.data!.status!) {
+                                  case Status.initial:
+                                    return const SizedBox.shrink();
+                                  case Status.loading:
+                                    List<Widget> shimmer = [];
+                                    for (var i = 0; i < (_currentPage == 1 ? _shimmerLength : 1); ++i) {
+                                      shimmer.add(const EventItemShimmerWidget());
                                     }
-                                  } else {
+                                    return Column(
+                                      children: shimmer,
+                                    );
+                                  case Status.completed:
+                                    EventListModel responses = snapshot.data!.data as EventListModel;
+                                    List<Widget> eventRows = [];
+                                    if (responses.data!.isNotEmpty) {
+                                      for (var item in responses.data!) {
+                                        eventRows.add(
+                                          EventItemWidget(
+                                            data: item,
+                                            source: 'tab',
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      Timer(
+                                        const Duration(milliseconds: 1),
+                                        () => {
+                                          setState(() {
+                                            _loadMore = false;
+                                          })
+                                        },
+                                      );
+                                      if (_eventRows.isEmpty) {
+                                        eventRows.add(const EventItemEmptyWidget());
+                                      }
+                                    }
+
+                                    eventListBloc.setInitial();
                                     Timer(
                                       const Duration(milliseconds: 1),
                                       () => {
                                         setState(() {
-                                          _loadMore = false;
+                                          _currentPage += 1;
+                                          _isLoading = false;
+                                          _eventRows.addAll(eventRows);
                                         })
                                       },
                                     );
+                                    return Container();
+                                  case Status.errror:
                                     if (_eventRows.isEmpty) {
-                                      eventRows.add(const EventItemEmptyWidget());
+                                      return const EventItemErrorWidget();
+                                    } else {
+                                      return const SizedBox.shrink();
                                     }
-                                  }
-
-                                  eventListBloc.setInitial();
-                                  Timer(
-                                    const Duration(milliseconds: 1),
-                                    () => {
-                                      setState(() {
-                                        _currentPage += 1;
-                                        _isLoading = false;
-                                        _eventRows.addAll(eventRows);
-                                      })
-                                    },
-                                  );
-                                  return Container();
-                                case Status.errror:
-                                  if (_eventRows.isEmpty) {
-                                    return const EventItemErrorWidget();
-                                  } else {
-                                    return const SizedBox.shrink();
-                                  }
+                                }
                               }
-                            }
-                            return Container();
-                          },
+                              return Container();
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: mediaPadding.bottom + 22,
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: mediaPadding.bottom + 22,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

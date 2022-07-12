@@ -291,7 +291,7 @@ class RegulationView extends StatelessWidget {
                                 child: const Center(
                                   child: Image(
                                     image: AssetImage(
-                                      'assets/images/icons/pin_active.png',
+                                      'assets/images/icons/pin.png',
                                     ),
                                     width: 22.0,
                                   ),

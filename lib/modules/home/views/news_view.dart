@@ -23,7 +23,7 @@ class _NewsViewState extends State<NewsView> {
   int _currentPage = 1;
   bool _loadMore = true;
   bool _isLoading = false;
-  int shimmerLength = 6;
+  int shimmerLength = 3;
   String source = 'tab';
 
   @override
@@ -44,6 +44,17 @@ class _NewsViewState extends State<NewsView> {
 
   void loadNews(int page) {
     newsListBloc.fetchResponse(1, page, 10);
+  }
+
+  Future<void> _refreshRandomNumbers() {
+    setState(() {
+      _currentPage = 1;
+      _loadMore = true;
+      _isLoading = false;
+      _newsRows = [];
+    });
+    loadNews(_currentPage);
+    return Future.delayed(const Duration(milliseconds: 500), () {});
   }
 
   @override
@@ -67,129 +78,133 @@ class _NewsViewState extends State<NewsView> {
           Column(
             children: [
               Expanded(
-                child: CustomScrollView(
-                  controller: scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    SliverAppBar(
-                      backgroundColor: Colors.transparent,
-                      automaticallyImplyLeading: false,
-                      centerTitle: false,
-                      titleSpacing: 0.0,
-                      elevation: 0,
-                      title: SizedBox(
-                        width: mediaSize.width,
-                        height: 54,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 22,
-                          ),
-                          child: Row(
-                            children: const [
-                              Text(
-                                'News',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 22,
-                                  fontFamily: "Google-Sans",
+                child: RefreshIndicator(
+                  onRefresh: _refreshRandomNumbers,
+                  displacement: 100,
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverAppBar(
+                        backgroundColor: Colors.transparent,
+                        automaticallyImplyLeading: false,
+                        centerTitle: false,
+                        titleSpacing: 0.0,
+                        elevation: 0,
+                        title: SizedBox(
+                          width: mediaSize.width,
+                          height: 54,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 22,
+                            ),
+                            child: Row(
+                              children: const [
+                                Text(
+                                  'News',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontFamily: "Google-Sans",
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 12,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        child: Column(
-                          children: List.generate(_newsRows.length, (index) {
-                            return _newsRows[index];
-                          }),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 12,
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        width: mediaSize.width,
-                        child: StreamBuilder<dynamic>(
-                          stream: newsListBloc.antDataStream,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              switch (snapshot.data!.status!) {
-                                case Status.initial:
-                                  return const SizedBox.shrink();
-                                case Status.loading:
-                                  List<Widget> shimmer = [];
-                                  for (var i = 0; i < (_currentPage == 1 ? shimmerLength : 1); ++i) {
-                                    shimmer.add(const NewsItemShimmerWidget());
-                                  }
-                                  return Column(
-                                    children: shimmer,
-                                  );
-                                case Status.completed:
-                                  NewsListModel responses = snapshot.data!.data as NewsListModel;
-                                  List<Widget> newsRows = [];
-                                  if (responses.data!.isNotEmpty) {
-                                    for (var item in responses.data!) {
-                                      newsRows.add(
-                                        NewsItemWidget(
-                                          data: item,
-                                          source: source,
-                                        ),
-                                      );
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          child: Column(
+                            children: List.generate(_newsRows.length, (index) {
+                              return _newsRows[index];
+                            }),
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          width: mediaSize.width,
+                          child: StreamBuilder<dynamic>(
+                            stream: newsListBloc.antDataStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                switch (snapshot.data!.status!) {
+                                  case Status.initial:
+                                    return const SizedBox.shrink();
+                                  case Status.loading:
+                                    List<Widget> shimmer = [];
+                                    for (var i = 0; i < (_currentPage == 1 ? shimmerLength : 1); ++i) {
+                                      shimmer.add(const NewsItemShimmerWidget());
                                     }
-                                  } else {
+                                    return Column(
+                                      children: shimmer,
+                                    );
+                                  case Status.completed:
+                                    NewsListModel responses = snapshot.data!.data as NewsListModel;
+                                    List<Widget> newsRows = [];
+                                    if (responses.data!.isNotEmpty) {
+                                      for (var item in responses.data!) {
+                                        newsRows.add(
+                                          NewsItemWidget(
+                                            data: item,
+                                            source: source,
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      Timer(
+                                        const Duration(milliseconds: 1),
+                                        () => {
+                                          setState(() {
+                                            _loadMore = false;
+                                          })
+                                        },
+                                      );
+                                      if (_newsRows.isEmpty) {
+                                        newsRows.add(const NewsItemEmptyWidget());
+                                      }
+                                    }
+                                    /* return Column(
+                                      children: newsRows,
+                                    ); */
+                                    newsListBloc.setInitial();
                                     Timer(
                                       const Duration(milliseconds: 1),
                                       () => {
                                         setState(() {
-                                          _loadMore = false;
+                                          _currentPage += 1;
+                                          _isLoading = false;
+                                          _newsRows.addAll(newsRows);
                                         })
                                       },
                                     );
+                                    return Container();
+                                  case Status.errror:
                                     if (_newsRows.isEmpty) {
-                                      newsRows.add(const NewsItemEmptyWidget());
+                                      return const NewsItemErrorWidget();
+                                    } else {
+                                      return const SizedBox.shrink();
                                     }
-                                  }
-                                  /* return Column(
-                                    children: newsRows,
-                                  ); */
-                                  newsListBloc.setInitial();
-                                  Timer(
-                                    const Duration(milliseconds: 1),
-                                    () => {
-                                      setState(() {
-                                        _currentPage += 1;
-                                        _isLoading = false;
-                                        _newsRows.addAll(newsRows);
-                                      })
-                                    },
-                                  );
-                                  return Container();
-                                case Status.errror:
-                                  if (_newsRows.isEmpty) {
-                                    return const NewsItemErrorWidget();
-                                  } else {
-                                    return const SizedBox.shrink();
-                                  }
+                                }
                               }
-                            }
-                            return Container();
-                          },
+                              return Container();
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: mediaPadding.bottom + 22,
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: mediaPadding.bottom + 22,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

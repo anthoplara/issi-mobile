@@ -26,7 +26,7 @@ class _RaceViewState extends State<RaceView> {
   int _currentPage = 1;
   bool _loadMore = true;
   bool _isLoading = false;
-  int _shimmerLength = 5;
+  int _shimmerLength = 3;
   String source = 'tab';
 
   @override
@@ -47,6 +47,17 @@ class _RaceViewState extends State<RaceView> {
 
   void loadRace(int page) {
     raceListBloc.fetchResponse(page, 10);
+  }
+
+  Future<void> _refreshRandomNumbers() {
+    setState(() {
+      _currentPage = 1;
+      _loadMore = true;
+      _isLoading = false;
+      _raceRows = [];
+    });
+    loadRace(_currentPage);
+    return Future.delayed(const Duration(milliseconds: 500), () {});
   }
 
   @override
@@ -70,146 +81,150 @@ class _RaceViewState extends State<RaceView> {
           Column(
             children: [
               Expanded(
-                child: CustomScrollView(
-                  controller: scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    SliverAppBar(
-                      backgroundColor: Colors.transparent,
-                      automaticallyImplyLeading: false,
-                      centerTitle: false,
-                      titleSpacing: 0.0,
-                      elevation: 0,
-                      title: Container(
-                        color: Colors.transparent,
-                        width: mediaSize.width,
-                        height: 54,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 16,
-                            right: 22,
-                          ),
-                          child: Row(
-                            children: [
-                              BouncingButtonHelper(
-                                width: 54,
-                                height: 54,
-                                color: Colors.transparent,
-                                bouncDeep: 0.9,
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Text(
-                                  'Races',
-                                  style: TextStyle(
+                child: RefreshIndicator(
+                  onRefresh: _refreshRandomNumbers,
+                  displacement: 100,
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverAppBar(
+                        backgroundColor: Colors.transparent,
+                        automaticallyImplyLeading: false,
+                        centerTitle: false,
+                        titleSpacing: 0.0,
+                        elevation: 0,
+                        title: Container(
+                          color: Colors.transparent,
+                          width: mediaSize.width,
+                          height: 54,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16,
+                              right: 22,
+                            ),
+                            child: Row(
+                              children: [
+                                BouncingButtonHelper(
+                                  width: 54,
+                                  height: 54,
+                                  color: Colors.transparent,
+                                  bouncDeep: 0.9,
+                                  onTap: () {
+                                    Get.back();
+                                  },
+                                  child: const Icon(
+                                    Icons.arrow_back_ios,
                                     color: Colors.black,
-                                    fontSize: 22,
-                                    fontFamily: "Google-Sans",
                                   ),
                                 ),
-                              ),
-                            ],
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 6.0,
+                                  ),
+                                  child: Text(
+                                    'Races',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 22,
+                                      fontFamily: "Google-Sans",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 12,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        child: Column(
-                          children: List.generate(_raceRows.length, (index) {
-                            return _raceRows[index];
-                          }),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 12,
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        width: mediaSize.width,
-                        child: StreamBuilder<dynamic>(
-                          stream: raceListBloc.antDataStream,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              switch (snapshot.data!.status!) {
-                                case Status.initial:
-                                  return const SizedBox.shrink();
-                                case Status.loading:
-                                  List<Widget> shimmer = [];
-                                  for (var i = 0; i < (_currentPage == 1 ? _shimmerLength : 1); ++i) {
-                                    shimmer.add(const RaceItemShimmerWidget());
-                                  }
-                                  return Column(
-                                    children: shimmer,
-                                  );
-                                case Status.completed:
-                                  RaceListModel responses = snapshot.data!.data as RaceListModel;
-                                  List<Widget> raceRows = [];
-                                  if (responses.data!.isNotEmpty) {
-                                    for (var item in responses.data!) {
-                                      raceRows.add(
-                                        RaceItemWidget(
-                                          data: item,
-                                          source: 'tab',
-                                        ),
-                                      );
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          child: Column(
+                            children: List.generate(_raceRows.length, (index) {
+                              return _raceRows[index];
+                            }),
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          width: mediaSize.width,
+                          child: StreamBuilder<dynamic>(
+                            stream: raceListBloc.antDataStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                switch (snapshot.data!.status!) {
+                                  case Status.initial:
+                                    return const SizedBox.shrink();
+                                  case Status.loading:
+                                    List<Widget> shimmer = [];
+                                    for (var i = 0; i < (_currentPage == 1 ? _shimmerLength : 1); ++i) {
+                                      shimmer.add(const RaceItemShimmerWidget());
                                     }
-                                  } else {
+                                    return Column(
+                                      children: shimmer,
+                                    );
+                                  case Status.completed:
+                                    RaceListModel responses = snapshot.data!.data as RaceListModel;
+                                    List<Widget> raceRows = [];
+                                    if (responses.data!.isNotEmpty) {
+                                      for (var item in responses.data!) {
+                                        raceRows.add(
+                                          RaceItemWidget(
+                                            data: item,
+                                            source: 'tab',
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      Timer(
+                                        const Duration(milliseconds: 1),
+                                        () => {
+                                          setState(() {
+                                            _loadMore = false;
+                                          })
+                                        },
+                                      );
+                                      if (_raceRows.isEmpty) {
+                                        raceRows.add(const RaceItemEmptyWidget());
+                                      }
+                                    }
+                                    raceListBloc.setInitial();
                                     Timer(
                                       const Duration(milliseconds: 1),
                                       () => {
                                         setState(() {
-                                          _loadMore = false;
+                                          _currentPage += 1;
+                                          _isLoading = false;
+                                          _raceRows.addAll(raceRows);
                                         })
                                       },
                                     );
+                                    return Container();
+                                  case Status.errror:
                                     if (_raceRows.isEmpty) {
-                                      raceRows.add(const RaceItemEmptyWidget());
+                                      return const RaceItemErrorWidget();
+                                    } else {
+                                      return const SizedBox.shrink();
                                     }
-                                  }
-                                  raceListBloc.setInitial();
-                                  Timer(
-                                    const Duration(milliseconds: 1),
-                                    () => {
-                                      setState(() {
-                                        _currentPage += 1;
-                                        _isLoading = false;
-                                        _raceRows.addAll(raceRows);
-                                      })
-                                    },
-                                  );
-                                  return Container();
-                                case Status.errror:
-                                  if (_raceRows.isEmpty) {
-                                    return const RaceItemErrorWidget();
-                                  } else {
-                                    return const SizedBox.shrink();
-                                  }
+                                }
                               }
-                            }
-                            return Container();
-                          },
+                              return Container();
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: mediaPadding.bottom + 22,
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: mediaPadding.bottom + 22,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
