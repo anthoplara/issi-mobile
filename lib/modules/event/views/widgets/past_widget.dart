@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/networks/api_response.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 
 import '../../blocs/past_bloc.dart';
 import '../../models/past_list_model.dart';
@@ -46,7 +47,7 @@ class _PastWidgetState extends State<PastWidget> {
     pastBloc.fetchResponse(page, 10);
   }
 
-  Future<void> _refreshRandomNumbers() {
+  Future<void> _refreshListData() {
     setState(() {
       _currentPage = 1;
       _loadMore = true;
@@ -70,103 +71,98 @@ class _PastWidgetState extends State<PastWidget> {
 
     return Scaffold(
       extendBody: true,
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refreshRandomNumbers,
-              displacement: 100,
-              child: CustomScrollView(
-                controller: scrollController,
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 12,
+          ConstantConfig().background,
+          RefreshIndicator(
+            color: Colors.orange[900],
+            strokeWidth: 1,
+            onRefresh: _refreshListData,
+            displacement: 100,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  SizedBox(
+                    child: Column(
+                      children: List.generate(_eventRows.length, (index) {
+                        return _eventRows[index];
+                      }),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      child: Column(
-                        children: List.generate(_eventRows.length, (index) {
-                          return _eventRows[index];
-                        }),
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      width: mediaSize.width,
-                      child: StreamBuilder<dynamic>(
-                        stream: pastBloc.antDataStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            switch (snapshot.data!.status!) {
-                              case Status.initial:
-                                return const SizedBox.shrink();
-                              case Status.loading:
-                                List<Widget> shimmer = [];
-                                for (var i = 0; i < (_currentPage == 1 ? _shimmerLength : 1); ++i) {
-                                  shimmer.add(const PastItemShimmerWidget());
-                                }
-                                return Column(
-                                  children: shimmer,
-                                );
-                              case Status.completed:
-                                PastListModel responses = snapshot.data!.data as PastListModel;
-                                List<Widget> eventRows = [];
-                                if (responses.data!.isNotEmpty) {
-                                  for (var item in responses.data!) {
-                                    eventRows.add(
-                                      PastItemWidget(
-                                        data: item,
-                                        source: 'tab',
-                                      ),
-                                    );
-                                  }
-                                } else {
-                                  Timer(
-                                    const Duration(milliseconds: 1),
-                                    () => {
-                                      setState(() {
-                                        _loadMore = false;
-                                      })
-                                    },
+                  SizedBox(
+                    width: mediaSize.width,
+                    child: StreamBuilder<dynamic>(
+                      stream: pastBloc.antDataStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          switch (snapshot.data!.status!) {
+                            case Status.initial:
+                              return const SizedBox.shrink();
+                            case Status.loading:
+                              List<Widget> shimmer = [];
+                              for (var i = 0; i < (_currentPage == 1 ? _shimmerLength : 1); ++i) {
+                                shimmer.add(const PastItemShimmerWidget());
+                              }
+                              return Column(
+                                children: shimmer,
+                              );
+                            case Status.completed:
+                              PastListModel responses = snapshot.data!.data as PastListModel;
+                              List<Widget> eventRows = [];
+                              if (responses.data!.isNotEmpty) {
+                                for (var item in responses.data!) {
+                                  eventRows.add(
+                                    PastItemWidget(
+                                      data: item,
+                                      source: 'tab',
+                                    ),
                                   );
-                                  if (_eventRows.isEmpty) {
-                                    eventRows.add(const PastItemEmptyWidget());
-                                  }
                                 }
-
-                                pastBloc.setInitial();
+                              } else {
                                 Timer(
                                   const Duration(milliseconds: 1),
                                   () => {
                                     setState(() {
-                                      _currentPage += 1;
-                                      _isLoading = false;
-                                      _eventRows.addAll(eventRows);
+                                      _loadMore = false;
                                     })
                                   },
                                 );
-                                return Container();
-                              case Status.errror:
                                 if (_eventRows.isEmpty) {
-                                  return const PastItemErrorWidget();
-                                } else {
-                                  return const SizedBox.shrink();
+                                  eventRows.add(const PastItemEmptyWidget());
                                 }
-                            }
+                              }
+
+                              pastBloc.setInitial();
+                              Timer(
+                                const Duration(milliseconds: 1),
+                                () => {
+                                  setState(() {
+                                    _currentPage += 1;
+                                    _isLoading = false;
+                                    _eventRows.addAll(eventRows);
+                                  })
+                                },
+                              );
+                              return Container();
+                            case Status.errror:
+                              if (_eventRows.isEmpty) {
+                                return const PastItemErrorWidget();
+                              } else {
+                                return const SizedBox.shrink();
+                              }
                           }
-                          return Container();
-                        },
-                      ),
+                        }
+                        return Container();
+                      },
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: mediaPadding.bottom + 22,
-                    ),
+                  SizedBox(
+                    height: mediaPadding.bottom + 22,
                   ),
                 ],
               ),

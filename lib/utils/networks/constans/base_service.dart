@@ -26,6 +26,14 @@ class BaseService {
   final String getNewsList = "get_content";
   final String getNewsDetail = "get_content_detail";
 
+  final String getRegulation = "get_kategori_regulasi_all";
+  final String getRegulationList = "get_regulasi_all";
+  final String getRegulationDetail = "get_regulasi_detail";
+
+  final String inactiveUser = "non_aktif_user";
+  final String checkUser = "cek_status_user";
+  final String reactiveUser = "reaktif_user";
+
   Future<dynamic> apiRequest(String method, String route, Map<String, dynamic> data) async {
     ApiWrapper apiWrapper = ApiWrapper();
     return await apiWrapper.request(baseUrl, initial, method, route, data);

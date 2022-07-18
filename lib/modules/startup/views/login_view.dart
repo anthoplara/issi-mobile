@@ -36,8 +36,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    usernameController.text = localData.read(KeyStorage.userName) ?? "";
-    passwordController.text = ""; //adi:gogo123
+    usernameController.text = localData.read(KeyStorage.lastUserName) ?? "";
+    passwordController.text = "";
     super.initState();
   }
 
@@ -209,7 +209,10 @@ class _LoginViewState extends State<LoginView> {
               autofocus: false,
               textInputAction: TextInputAction.next,
               controller: usernameController,
-              style: const TextStyle(fontSize: 14.0, color: Colors.black),
+              style: const TextStyle(
+                fontSize: 14.0,
+                color: Colors.black,
+              ),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -264,7 +267,10 @@ class _LoginViewState extends State<LoginView> {
               cursorHeight: 16,
               autofocus: false,
               controller: passwordController,
-              style: const TextStyle(fontSize: 14.0, color: Colors.black),
+              style: const TextStyle(
+                fontSize: 14.0,
+                color: Colors.black,
+              ),
               onSubmitted: (value) async {
                 doLogin();
               },
@@ -272,7 +278,10 @@ class _LoginViewState extends State<LoginView> {
                 filled: true,
                 fillColor: Colors.white,
                 hintText: "Password",
-                hintStyle: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                hintStyle: const TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.grey,
+                ),
                 prefixIcon: const Icon(
                   Icons.key_outlined,
                   size: 22,
@@ -356,14 +365,14 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
               ),
-              Text(
+              /*  Text(
                 "Forgot Password?",
                 style: TextStyle(
                   color: Colors.blue[500],
                   fontSize: 14.0,
                   fontFamily: "Google-Sans",
                 ),
-              ),
+              ), */
             ],
           ),
         ],
@@ -442,7 +451,7 @@ class _LoginViewState extends State<LoginView> {
           const SizedBox(
             height: 16,
           ),
-          Row(
+          /* Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
@@ -462,7 +471,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ],
-          ),
+          ), */
         ],
       ),
     );
@@ -502,24 +511,6 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Widget buttonSuccess(double formLoginWidth) {
-    /* return Container(
-      width: formLoginWidth > 300.0 ? 300.0 : formLoginWidth,
-      height: 42,
-      decoration: BoxDecoration(
-        color: Colors.grey[200]!,
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Center(
-        child: Text(
-          "Login Berhasil",
-          style: TextStyle(
-            fontSize: 14.0,
-            fontFamily: "Google-Sans",
-            color: Colors.green[800],
-          ),
-        ),
-      ),
-    ); */
     return Shimmer.fromColors(
       baseColor: Colors.grey[200]!,
       highlightColor: Colors.grey[100]!,

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -20,10 +22,37 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.485355287250-3mfmot60div0geg9ddv4cn4p3ee5d9hf</string>
+				<string>fb559518852313611</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>559518852313611</string>
+	<key>FacebookClientToken</key>
+	<string>7df84417827b47fb5c0e879766b1b6eb</string>
+	<key>FacebookDisplayName</key>
+	<string>ICF Mobile</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>To give you our nearest events and regulations</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To give you our nearest events and regulations</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -31,8 +60,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -43,37 +70,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
-    <string>ISSI Mobile membutuhkan akses lokasi</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>ISSI Mobile Membutuhkan akses lokasi</string>
-
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.342516576144-7ae2hmoj3t49phteovbon4jcrtah4eql</string>
-				<string>fb1446768115767156</string>
-			</array>
-		</dict>
-	</array>
-
-	<key>FacebookAppID</key>
-	<string>1446768115767156</string>
-	<key>FacebookClientToken</key>
-	<string>66cd2a39848cf9893fa827d7fa2cbc66</string>
-	<key>FacebookDisplayName</key>
-	<string>ISSI Mobile</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-share-api</string>
-	</array>
-	<!-- Start of Facebook -->
 </dict>
 </plist>

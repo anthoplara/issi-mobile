@@ -8,6 +8,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mobile/utils/themes/constant.dart';
 import 'package:mobile/utils/themes/service.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mobile/youtube_player.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'modules/startup/views/splash_screen_view.dart';
 
@@ -59,10 +61,12 @@ class _IssiMobileState extends State<IssiMobile> {
             darkTheme: Themes.dark,
             themeMode: ThemeService().theme,
             debugShowCheckedModeBanner: false,
-            //home: const LoginView(),
             home: const SplashscreenView(),
-            //home: const SignInDemo(),
           ),
+          UpgradeAlert(
+            upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
+          ),
+          //const YoutubePlayer(),
         ],
       ),
     );

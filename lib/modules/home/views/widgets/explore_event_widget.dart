@@ -33,6 +33,7 @@ class _ExploreEventWidgetState extends State<ExploreEventWidget> {
   @override
   Widget build(BuildContext context) {
     var mediaSize = MediaQuery.of(context).size;
+    double h = MediaQuery.of(context).textScaleFactor;
     return Column(
       children: [
         Padding(

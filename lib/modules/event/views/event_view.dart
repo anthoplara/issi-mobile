@@ -55,7 +55,7 @@ class _EventViewState extends State<EventView> {
     super.dispose();
   }
 
-  Future<void> _refreshRandomNumbers() {
+  Future<void> _refreshListData() {
     setState(() {
       _currentPage = 1;
       _loadMore = true;
@@ -82,7 +82,9 @@ class _EventViewState extends State<EventView> {
             children: [
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: _refreshRandomNumbers,
+                  color: Colors.orange[900],
+                  strokeWidth: 1,
+                  onRefresh: _refreshListData,
                   displacement: 100,
                   child: CustomScrollView(
                     controller: scrollController,

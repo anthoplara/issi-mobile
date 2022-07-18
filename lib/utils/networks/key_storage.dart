@@ -2,6 +2,7 @@
 class KeyStorage {
   //startup
   static String isOnboarded = "isOnboarded";
+  static String lastUserName = "lastUserName";
 
   static String userId = "userId";
   static String userName = "userName";

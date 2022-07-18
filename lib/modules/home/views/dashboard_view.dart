@@ -8,6 +8,7 @@ import 'package:mobile/modules/event/views/event_view.dart';
 import 'package:mobile/modules/startup/views/login_view.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
+import 'package:override_text_scale_factor/override_text_scale_factor.dart';
 
 import 'event_view.dart';
 import 'profile_view.dart';

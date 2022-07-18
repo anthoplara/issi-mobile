@@ -10,6 +10,7 @@ import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/api_response.dart';
 import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../blocs/event_detail_bloc.dart';
 import '../models/event_detail_model.dart';
@@ -65,7 +66,6 @@ class _EventDetailViewState extends State<EventDetailView> {
     var mediaSize = MediaQuery.of(context).size;
     var mediaPadding = MediaQuery.of(context).padding;
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: isLoading
           ? Shimmer.fromColors(
@@ -228,18 +228,20 @@ class _EventDetailViewState extends State<EventDetailView> {
   Widget pageEvent(EventDetailData data) {
     var mediaSize = MediaQuery.of(context).size;
     var mediaPadding = MediaQuery.of(context).padding;
-    bool _allowRegister = allowRegister;
+    bool _allowRegister = false;
     String dateTop = "-";
     String dateFromServer = data.tglEvent ?? "-";
 
-    if (dateFromServer != "") {
-      DateTime dt = DateTime.parse(dateFromServer);
-      _allowRegister = dt.millisecondsSinceEpoch > DateTime.now().millisecondsSinceEpoch;
-      dateTop = DateFormat('d MMMM yyyy').format(dt);
-    }
+    if (data.isActive == "1") {
+      if (dateFromServer != "") {
+        DateTime dt = DateTime.parse(dateFromServer);
+        _allowRegister = dt.millisecondsSinceEpoch > DateTime.now().millisecondsSinceEpoch;
+        dateTop = DateFormat('d MMMM yyyy').format(dt);
+      }
 
-    if (data.sudahTerdaftar == "1") {
-      _allowRegister = false;
+      if (data.sudahTerdaftar == "1") {
+        _allowRegister = false;
+      }
     }
 
     String dateBottom = "-";
@@ -275,7 +277,7 @@ class _EventDetailViewState extends State<EventDetailView> {
                 backgroundColor: Colors.grey,
                 radius: 17,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(11),
+                  borderRadius: BorderRadius.circular(17),
                   child: SizedBox(
                     height: 34,
                     width: 34,
@@ -428,6 +430,13 @@ class _EventDetailViewState extends State<EventDetailView> {
                   fontFamily: "Google-Sans",
                   color: Colors.grey[800],
                 ),
+                onTapUrl: (url) async {
+                  print('tapped $url');
+                  //_launchUrl(url);
+                  await launchUrl(Uri.parse(url));
+
+                  return true;
+                },
               ),
             ],
           ),

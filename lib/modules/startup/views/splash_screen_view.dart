@@ -127,6 +127,7 @@ class _SplashscreenViewState extends State<SplashscreenView> {
                     'assets/images/splashscreen.png',
                   ),
                   width: mediaSize.width,
+                  fit: BoxFit.cover,
                 ),
                 Container(
                   height: 100,

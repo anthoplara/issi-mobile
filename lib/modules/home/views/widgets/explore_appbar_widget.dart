@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:mobile/modules/search/views/search_view.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -207,7 +209,7 @@ class _ExploreAppBarWidgetState extends State<ExploreAppBarWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: mediaSize.width - 60,
+                      width: mediaSize.width - 65,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -231,7 +233,7 @@ class _ExploreAppBarWidgetState extends State<ExploreAppBarWidget> {
                           Padding(
                             padding: const EdgeInsets.only(left: 14.0),
                             child: SizedBox(
-                              width: mediaSize.width - 120,
+                              width: mediaSize.width - 130,
                               height: 32,
                               child: TextButton(
                                 style: TextButton.styleFrom(
@@ -240,7 +242,11 @@ class _ExploreAppBarWidgetState extends State<ExploreAppBarWidget> {
                                   padding: const EdgeInsets.all(0),
                                 ),
                                 onPressed: () {
-                                  print('Goto Search page');
+                                  Get.to(
+                                    const SearchView(),
+                                    transition: Transition.fadeIn,
+                                    duration: const Duration(milliseconds: 400),
+                                  );
                                 },
                                 child: Row(
                                   children: const [

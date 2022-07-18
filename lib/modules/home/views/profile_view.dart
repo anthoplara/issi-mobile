@@ -12,6 +12,8 @@ import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'widgets/profile_delete_widget.dart';
+
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
 
@@ -31,8 +33,18 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
+  }
+
+  void deleteCallback(bool status) {
+    if (status) {
+      localData.write(KeyStorage.userId, "0");
+      Get.offAll(
+        const SplashscreenView(),
+        transition: Transition.fadeIn,
+        duration: const Duration(milliseconds: 400),
+      );
+    }
   }
 
   @override
@@ -159,7 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
                       const SizedBox(
                         height: 22,
                       ),
-                      Center(
+                      /* Center(
                         child: BouncingButtonHelper(
                           width: 160,
                           color: Colors.white,
@@ -195,7 +207,7 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                           ),
                         ),
-                      ),
+                      ), */
                       const SizedBox(
                         height: 16,
                       ),
@@ -209,11 +221,11 @@ class _ProfileViewState extends State<ProfileView> {
                     color: Colors.white,
                     border: Border(
                       top: BorderSide(
-                        color: Color(0xFFf37501).withOpacity(0.1),
+                        color: const Color(0xFFf37501).withOpacity(0.1),
                         width: 1.0,
                       ),
                       bottom: BorderSide(
-                        color: Color(0xFFf37501).withOpacity(0.1),
+                        color: const Color(0xFFf37501).withOpacity(0.1),
                         width: 1.0,
                       ),
                     ),
@@ -352,6 +364,24 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ],
                   ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 22,
+                    ),
+                    const Text(
+                      "Or",
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontFamily: "Google-Sans",
+                        color: Colors.black,
+                      ),
+                    ),
+                    ProfileDeleteWidget(callback: deleteCallback),
+                  ],
                 ),
               ),
               SliverToBoxAdapter(

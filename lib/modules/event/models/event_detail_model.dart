@@ -26,6 +26,7 @@ class EventDetailModel {
 
 class EventDetailData {
   String? id;
+  String? isActive;
   String? kategori;
   String? namaKategori;
   String? namaEvent;
@@ -42,6 +43,7 @@ class EventDetailData {
 
   EventDetailData({
     this.id,
+    this.isActive,
     this.kategori,
     this.namaKategori,
     this.namaEvent,
@@ -59,6 +61,7 @@ class EventDetailData {
 
   EventDetailData.fromJson(Map<String, dynamic> json) {
     id = json['id'] as String?;
+    isActive = json['is_active'] as String?;
     kategori = json['kategori'] as String?;
     namaKategori = json['nama_kategori'] as String?;
     namaEvent = json['nama_event'] as String?;
@@ -78,6 +81,7 @@ class EventDetailData {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['id'] = id;
     json['kategori'] = kategori;
+    json['is_active'] = isActive;
     json['nama_kategori'] = namaKategori;
     json['nama_event'] = namaEvent;
     json['tgl_event'] = tglEvent;

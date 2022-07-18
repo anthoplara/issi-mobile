@@ -10,7 +10,6 @@ class ConstantConfig {
         colors: [
           Colors.white,
           Color(0xFFFFF8F2),
-          //Color(0xFFF3F6FB),
         ],
       ),
     ),

@@ -63,7 +63,7 @@ class _ExploreBannerWidgetState extends State<ExploreBannerWidget> {
                             autoPlayInterval: const Duration(seconds: 6),
                             autoPlayAnimationDuration: const Duration(milliseconds: 600),
                             disableCenter: true,
-                            viewportFraction: ((mediaSize.width > 420 ? 420 : mediaSize.width) * 0.8) / mediaSize.width,
+                            viewportFraction: ((mediaSize.width > 420 ? 420 : mediaSize.width) - 44) / (mediaSize.width - 44),
                             initialPage: 0,
                           ),
                         ),

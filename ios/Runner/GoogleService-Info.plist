@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>342516576144-7ae2hmoj3t49phteovbon4jcrtah4eql.apps.googleusercontent.com</string>
+	<string>485355287250-3mfmot60div0geg9ddv4cn4p3ee5d9hf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.342516576144-7ae2hmoj3t49phteovbon4jcrtah4eql</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>342516576144-jgnqalld1fj5l8kojkd9h95jkajf907k.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.485355287250-3mfmot60div0geg9ddv4cn4p3ee5d9hf</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDLjibukIzgD6ZFJ66IpncvGwJfmkxyLJM</string>
+	<string>AIzaSyAgF_9pVNg2Vku-uRLrdfWU2n7epHaH_oM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>342516576144</string>
+	<string>485355287250</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.kitaissi.mobile</string>
 	<key>PROJECT_ID</key>
-	<string>issi-mobile-22520</string>
+	<string>icf-mobile</string>
 	<key>STORAGE_BUCKET</key>
-	<string>issi-mobile-22520.appspot.com</string>
+	<string>icf-mobile.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:342516576144:ios:f333752d8d8b22288b4d15</string>
+	<string>1:485355287250:ios:e640fa23eff8b74f1af30b</string>
 </dict>
 </plist>

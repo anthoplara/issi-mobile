@@ -43,6 +43,8 @@ class LoginOtherBloc {
         if (!(dataResponse.error ?? true)) {
           if (dataResponse.data!.isNotEmpty) {
             LoginData data = dataResponse.data![0];
+            await localData.write(KeyStorage.lastUserName, "");
+
             await localData.write(KeyStorage.userId, data.id);
             await localData.write(KeyStorage.userName, data.username);
             await localData.write(KeyStorage.userFullName, data.nama);

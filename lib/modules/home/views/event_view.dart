@@ -54,7 +54,6 @@ class _MyEventViewState extends State<MyEventView> {
     double contentHeight = mediaSize.height - headerHeight;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
       extendBody: true,
       //appBar:
       body: Stack(
@@ -65,8 +64,7 @@ class _MyEventViewState extends State<MyEventView> {
               SizedBox(
                 height: headerHeight,
               ),
-              Container(
-                color: Colors.red,
+              SizedBox(
                 width: mediaSize.width,
                 height: contentHeight,
                 child: IndexedStack(
