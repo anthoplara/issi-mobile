@@ -1,3 +1,8 @@
-1. Signin
-- Indikator 
+//Generate Icon Launcher (iOS tidak support transparan, atur di pubspec.yaml)
+- flutter pub run flutter_launcher_icons:main
 
+//BUILD
+- Ganti versi di file pubspec.yaml
+- flutter clean
+- flutter build apk (flutter build apk --split-per-abi)
+- flutter build ipa

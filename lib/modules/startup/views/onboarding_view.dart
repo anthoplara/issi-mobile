@@ -9,6 +9,7 @@ import 'package:mobile/utils/helpers/fade_slide_delay.dart';
 import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
 import 'package:mobile/modules/home/views/dashboard_view.dart';
+import 'package:override_text_scale_factor/override_text_scale_factor.dart';
 
 import 'login_view.dart';
 
@@ -47,43 +48,46 @@ class _OnboardingViewState extends State<OnboardingView> {
   Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,
-          builder: (context) => CupertinoAlertDialog(
-            title: const Text(
-              "Konfirmasi",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontFamily: "Google-Sans",
-              ),
-            ),
-            content: const Text(
-              "Apakah anda yakin akan menutup aplikasi?",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontFamily: "Google-Sans",
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text(
-                  "Tidak",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: "Google-Sans",
-                  ),
+          builder: (context) => OverrideTextScaleFactor(
+            textScaleFactor: ConstantConfig().textScale,
+            child: CupertinoAlertDialog(
+              title: const Text(
+                "Konfirmasi",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Google-Sans",
                 ),
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text(
-                  "Ya",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: "Google-Sans",
-                  ),
+              content: const Text(
+                "Apakah anda yakin akan menutup aplikasi?",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Google-Sans",
                 ),
               ),
-            ],
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text(
+                    "Tidak",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: "Google-Sans",
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text(
+                    "Ya",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: "Google-Sans",
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         )) ??
         false;
@@ -93,11 +97,14 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Stack(
-        children: [
-          ConstantConfig().background,
-          topSliderLayout(),
-        ],
+      child: OverrideTextScaleFactor(
+        textScaleFactor: ConstantConfig().textScale,
+        child: Stack(
+          children: [
+            ConstantConfig().background,
+            topSliderLayout(),
+          ],
+        ),
       ),
     );
   }

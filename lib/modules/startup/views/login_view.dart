@@ -9,6 +9,7 @@ import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/api_response.dart';
 import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
+import 'package:override_text_scale_factor/override_text_scale_factor.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../blocs/login_bloc.dart';
@@ -64,42 +65,45 @@ class _LoginViewState extends State<LoginView> {
     double paddingBottomHeight = 22;
     double headerHeight = (mediaSize.height - formLoginHeight - footerHeight - mediaPadding.bottom - paddingBottomHeight - mediaPadding.top) * 0.7;
     double spacerHeight = (mediaSize.height - formLoginHeight - footerHeight - mediaPadding.bottom - paddingBottomHeight - mediaPadding.top) * 0.3;
-    return Scaffold(
-      body: Stack(
-        children: [
-          ConstantConfig().background,
-          CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: GestureDetector(
-                  onTap: () {
-                    FocusScopeNode currentFocus = FocusScope.of(context);
-                    if (!currentFocus.hasPrimaryFocus) {
-                      currentFocus.unfocus();
-                    }
-                  },
-                  child: Column(
-                    children: [
-                      headerForm(mediaSize.width, headerHeight),
-                      SizedBox(
-                        height: spacerHeight / 2,
-                      ),
-                      bodyForm(formLoginWidth, formLoginHeight),
-                      SizedBox(
-                        height: spacerHeight / 2,
-                      ),
-                      footerForm(formLoginWidth, footerHeight),
-                      SizedBox(
-                        height: paddingBottomHeight,
-                      ),
-                    ],
+    return OverrideTextScaleFactor(
+      textScaleFactor: ConstantConfig().textScale,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            ConstantConfig().background,
+            CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: GestureDetector(
+                    onTap: () {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        headerForm(mediaSize.width, headerHeight),
+                        SizedBox(
+                          height: spacerHeight / 2,
+                        ),
+                        bodyForm(formLoginWidth, formLoginHeight),
+                        SizedBox(
+                          height: spacerHeight / 2,
+                        ),
+                        footerForm(formLoginWidth, footerHeight),
+                        SizedBox(
+                          height: paddingBottomHeight,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:mobile/modules/startup/views/splash_screen_view.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
+import 'package:override_text_scale_factor/override_text_scale_factor.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'widgets/profile_delete_widget.dart';
@@ -292,56 +293,59 @@ class _ProfileViewState extends State<ProfileView> {
                           onTap: () async {
                             (await showCupertinoModalPopup(
                               context: context,
-                              builder: (BuildContext context) => BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                                child: CupertinoActionSheet(
-                                  title: Text(
-                                    "Konfirmasi",
-                                    style: TextStyle(
-                                      color: Colors.grey[900]!,
-                                      fontSize: 16.0,
-                                      fontFamily: "Google-Sans",
+                              builder: (BuildContext context) => OverrideTextScaleFactor(
+                                textScaleFactor: ConstantConfig().textScale,
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                                  child: CupertinoActionSheet(
+                                    title: Text(
+                                      "Konfirmasi",
+                                      style: TextStyle(
+                                        color: Colors.grey[900]!,
+                                        fontSize: 16.0,
+                                        fontFamily: "Google-Sans",
+                                      ),
                                     ),
-                                  ),
-                                  message: Text(
-                                    "Apakah anda yakin akan keluar akun?",
-                                    style: TextStyle(
-                                      color: Colors.grey[900]!,
-                                      fontSize: 14.0,
-                                      fontFamily: "Google-Sans",
+                                    message: Text(
+                                      "Apakah anda yakin akan keluar akun?",
+                                      style: TextStyle(
+                                        color: Colors.grey[900]!,
+                                        fontSize: 14.0,
+                                        fontFamily: "Google-Sans",
+                                      ),
                                     ),
-                                  ),
-                                  actions: <CupertinoActionSheetAction>[
-                                    CupertinoActionSheetAction(
-                                      isDefaultAction: true,
+                                    actions: <CupertinoActionSheetAction>[
+                                      CupertinoActionSheetAction(
+                                        isDefaultAction: true,
+                                        child: const Text(
+                                          "Ya, Keluar!",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            fontFamily: "Google-Sans",
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                          localData.write(KeyStorage.userId, "0");
+                                          Get.offAll(
+                                            const SplashscreenView(),
+                                            transition: Transition.fadeIn,
+                                            duration: const Duration(milliseconds: 400),
+                                          );
+                                        },
+                                      )
+                                    ],
+                                    cancelButton: CupertinoActionSheetAction(
+                                      isDestructiveAction: true,
                                       child: const Text(
-                                        "Ya, Keluar!",
+                                        "Tidak",
                                         style: TextStyle(
                                           fontSize: 14.0,
                                           fontFamily: "Google-Sans",
                                         ),
                                       ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop(false);
-                                        localData.write(KeyStorage.userId, "0");
-                                        Get.offAll(
-                                          const SplashscreenView(),
-                                          transition: Transition.fadeIn,
-                                          duration: const Duration(milliseconds: 400),
-                                        );
-                                      },
-                                    )
-                                  ],
-                                  cancelButton: CupertinoActionSheetAction(
-                                    isDestructiveAction: true,
-                                    child: const Text(
-                                      "Tidak",
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        fontFamily: "Google-Sans",
-                                      ),
+                                      onPressed: () => Navigator.of(context).pop(false),
                                     ),
-                                    onPressed: () => Navigator.of(context).pop(false),
                                   ),
                                 ),
                               ),

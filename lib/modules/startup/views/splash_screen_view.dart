@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mobile/modules/home/views/dashboard_view.dart';
 import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/networks/key_storage.dart';
+import 'package:override_text_scale_factor/override_text_scale_factor.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -53,43 +54,46 @@ class _SplashscreenViewState extends State<SplashscreenView> {
   Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,
-          builder: (context) => CupertinoAlertDialog(
-            title: const Text(
-              "Konfirmasi",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontFamily: "Google-Sans",
-              ),
-            ),
-            content: const Text(
-              "Apakah anda yakin akan menutup aplikasi?",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontFamily: "Google-Sans",
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text(
-                  "Tidak",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: "Google-Sans",
-                  ),
+          builder: (context) => OverrideTextScaleFactor(
+            textScaleFactor: ConstantConfig().textScale,
+            child: CupertinoAlertDialog(
+              title: const Text(
+                "Konfirmasi",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Google-Sans",
                 ),
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text(
-                  "Ya",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: "Google-Sans",
-                  ),
+              content: const Text(
+                "Apakah anda yakin akan menutup aplikasi?",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Google-Sans",
                 ),
               ),
-            ],
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text(
+                    "Tidak",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: "Google-Sans",
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text(
+                    "Ya",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: "Google-Sans",
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         )) ??
         false;
@@ -114,78 +118,81 @@ class _SplashscreenViewState extends State<SplashscreenView> {
     var mediaPadding = MediaQuery.of(context).padding;
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-        body: Stack(
-          children: [
-            ConstantConfig().background,
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image(
-                  image: const AssetImage(
-                    'assets/images/splashscreen.png',
+      child: OverrideTextScaleFactor(
+        textScaleFactor: ConstantConfig().textScale,
+        child: Scaffold(
+          body: Stack(
+            children: [
+              ConstantConfig().background,
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image(
+                    image: const AssetImage(
+                      'assets/images/splashscreen.png',
+                    ),
+                    width: mediaSize.width,
+                    fit: BoxFit.cover,
                   ),
-                  width: mediaSize.width,
-                  fit: BoxFit.cover,
-                ),
-                Container(
-                  height: 100,
-                  color: const Color(0xff23232d),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                const Expanded(
-                  child: Center(
-                    child: Image(
-                      image: AssetImage(
-                        'assets/images/logo_full.png',
+                  Container(
+                    height: 100,
+                    color: const Color(0xff23232d),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  const Expanded(
+                    child: Center(
+                      child: Image(
+                        image: AssetImage(
+                          'assets/images/logo_full.png',
+                        ),
+                        width: 220.0,
                       ),
-                      width: 220.0,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: mediaSize.height * 0.3,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 10,
+                  SizedBox(
+                    height: mediaSize.height * 0.3,
                   ),
-                  child: CupertinoActivityIndicator(
-                    radius: 10,
-                    color: Colors.white,
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    child: CupertinoActivityIndicator(
+                      radius: 10,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: mediaPadding.bottom + 6),
-                  child: copyright == ""
-                      ? Shimmer.fromColors(
-                          baseColor: Colors.grey[700]!,
-                          highlightColor: Colors.grey[900]!,
-                          child: Container(
-                            width: 160,
-                            height: 14,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4.0),
-                              color: Colors.grey[700],
+                  Padding(
+                    padding: EdgeInsets.only(bottom: mediaPadding.bottom + 6),
+                    child: copyright == ""
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.grey[700]!,
+                            highlightColor: Colors.grey[900]!,
+                            child: Container(
+                              width: 160,
+                              height: 14,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4.0),
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          )
+                        : Text(
+                            copyright,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Color(0xFFcccccc),
+                              fontFamily: "Google-Sans",
                             ),
                           ),
-                        )
-                      : Text(
-                          copyright,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFFcccccc),
-                            fontFamily: "Google-Sans",
-                          ),
-                        ),
-                ),
-              ],
-            ),
-          ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

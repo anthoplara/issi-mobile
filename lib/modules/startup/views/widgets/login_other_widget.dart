@@ -46,6 +46,7 @@ class _LoginOtherWidgetState extends State<LoginOtherWidget> {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       callbackGoogle(account);
     });
+    _googleSignIn.signInSilently();
     super.initState();
   }
 

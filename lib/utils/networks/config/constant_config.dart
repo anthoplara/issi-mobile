@@ -14,4 +14,5 @@ class ConstantConfig {
       ),
     ),
   );
+  final double textScale = 1.0;
 }

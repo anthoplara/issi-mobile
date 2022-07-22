@@ -19,13 +19,6 @@ PODS:
   - flutter_facebook_auth (4.4.0):
     - FBSDKLoginKit (~> 14.0.0)
     - Flutter
-  - flutter_inappwebview (0.0.1):
-    - Flutter
-    - flutter_inappwebview/Core (= 0.0.1)
-    - OrderedSet (~> 5.0)
-  - flutter_inappwebview/Core (0.0.1):
-    - Flutter
-    - OrderedSet (~> 5.0)
   - flutter_pdfview (1.0.2):
     - Flutter
   - FMDB (2.7.5):
@@ -46,7 +39,6 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.2)
-  - OrderedSet (5.0.0)
   - package_info (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -69,7 +61,6 @@ DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
-  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
   - geocoding (from `.symlinks/plugins/geocoding/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
@@ -94,7 +85,6 @@ SPEC REPOS:
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
-    - OrderedSet
 
 EXTERNAL SOURCES:
   device_info_plus:
@@ -103,8 +93,6 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_facebook_auth:
     :path: ".symlinks/plugins/flutter_facebook_auth/ios"
-  flutter_inappwebview:
-    :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_pdfview:
     :path: ".symlinks/plugins/flutter_pdfview/ios"
   geocoding:
@@ -139,7 +127,6 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: dbe86ef42ab142f3bd0f1c904a21bb33f31c5569
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_facebook_auth: 8992ef870d441b8403a3b6b9859e7932605407cf
-  flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
@@ -148,7 +135,6 @@ SPEC CHECKSUMS:
   GoogleSignIn: 3c68388ac221f379676e8f1cb115df3aaf73b93f
   GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02

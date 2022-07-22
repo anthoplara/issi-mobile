@@ -9,6 +9,7 @@ import 'package:mobile/modules/event/views/widgets/fab_join_event_widget.dart';
 import 'package:mobile/utils/helpers/bouncing_button.dart';
 import 'package:mobile/utils/networks/api_response.dart';
 import 'package:mobile/utils/networks/config/constant_config.dart';
+import 'package:override_text_scale_factor/override_text_scale_factor.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -65,162 +66,165 @@ class _EventDetailViewState extends State<EventDetailView> {
   Widget build(BuildContext context) {
     var mediaSize = MediaQuery.of(context).size;
     var mediaPadding = MediaQuery.of(context).padding;
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: isLoading
-          ? Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[200]!,
-              child: Container(
-                width: 220,
-                height: 54,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300]!,
-                  borderRadius: BorderRadius.circular(30),
+    return OverrideTextScaleFactor(
+      textScaleFactor: ConstantConfig().textScale,
+      child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: isLoading
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[200]!,
+                child: Container(
+                  width: 220,
+                  height: 54,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300]!,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-              ),
-            )
-          : allowRegister
-              ? FabJoinEventWidget(dataId: widget.dataId, callback: callbackJoin)
-              : const SizedBox.shrink(),
-      extendBody: true,
-      body: Stack(
-        children: [
-          ConstantConfig().background,
-          SizedBox(
-            child: NestedScrollView(
-              physics: const BouncingScrollPhysics(),
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    backgroundColor: const Color(0xFF222222),
-                    pinned: false,
-                    expandedHeight: mediaSize.shortestSide * 0.4,
-                    automaticallyImplyLeading: false,
-                    centerTitle: false,
-                    title: Container(
-                      color: Colors.transparent,
-                      width: mediaSize.width,
-                      height: 54,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 0,
-                          right: 22,
-                        ),
-                        child: Row(
-                          children: [
-                            BouncingButtonHelper(
-                              width: 54,
-                              height: 54,
-                              color: Colors.transparent,
-                              bouncDeep: 0.9,
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: const Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                left: 6.0,
-                              ),
-                              child: Text(
-                                'Event Detail',
-                                style: TextStyle(
+              )
+            : allowRegister
+                ? FabJoinEventWidget(dataId: widget.dataId, callback: callbackJoin)
+                : const SizedBox.shrink(),
+        extendBody: true,
+        body: Stack(
+          children: [
+            ConstantConfig().background,
+            SizedBox(
+              child: NestedScrollView(
+                physics: const BouncingScrollPhysics(),
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      backgroundColor: const Color(0xFF222222),
+                      pinned: false,
+                      expandedHeight: mediaSize.shortestSide * 0.4,
+                      automaticallyImplyLeading: false,
+                      centerTitle: false,
+                      title: Container(
+                        color: Colors.transparent,
+                        width: mediaSize.width,
+                        height: 54,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 0,
+                            right: 22,
+                          ),
+                          child: Row(
+                            children: [
+                              BouncingButtonHelper(
+                                width: 54,
+                                height: 54,
+                                color: Colors.transparent,
+                                bouncDeep: 0.9,
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: const Icon(
+                                  Icons.arrow_back_ios,
                                   color: Colors.white,
-                                  fontSize: 22,
-                                  fontFamily: "Google-Sans",
                                 ),
                               ),
-                            ),
-                          ],
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                  left: 6.0,
+                                ),
+                                child: Text(
+                                  'Event Detail',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontFamily: "Google-Sans",
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Hero(
-                        tag: widget.heroTag,
-                        child: CachedNetworkImage(
-                          imageUrl: widget.dataImage,
-                          placeholder: (context, url) {
-                            return Shimmer.fromColors(
-                              baseColor: Colors.grey[200]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Hero(
+                          tag: widget.heroTag,
+                          child: CachedNetworkImage(
+                            imageUrl: widget.dataImage,
+                            placeholder: (context, url) {
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey[200]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(
+                                  height: 100,
+                                  width: 240,
+                                  color: Colors.grey[200],
+                                ),
+                              );
+                            },
+                            errorWidget: (context, url, error) {
+                              return Container(
                                 height: 100,
                                 width: 240,
                                 color: Colors.grey[200],
-                              ),
-                            );
-                          },
-                          errorWidget: (context, url, error) {
-                            return Container(
-                              height: 100,
-                              width: 240,
-                              color: Colors.grey[200],
-                              child: const Center(
-                                child: Image(
-                                  image: AssetImage(
-                                    'assets/images/handler/broken_image_64.png',
+                                child: const Center(
+                                  child: Image(
+                                    image: AssetImage(
+                                      'assets/images/handler/broken_image_64.png',
+                                    ),
+                                    width: 64.0,
                                   ),
-                                  width: 64.0,
                                 ),
-                              ),
-                            );
-                          },
-                          fit: BoxFit.cover,
+                              );
+                            },
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ];
-              },
-              body: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 16,
+                  ];
+                },
+                body: CustomScrollView(
+                  slivers: [
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 16,
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: StreamBuilder<dynamic>(
-                      stream: eventDetailBloc.antDataStream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          switch (snapshot.data!.status!) {
-                            case Status.initial:
-                              return shimmerEvent();
-                            case Status.loading:
-                              return shimmerEvent();
-                            case Status.completed:
-                              EventDetailModel responses = snapshot.data!.data as EventDetailModel;
-                              Widget eventPage = const SizedBox.shrink();
-                              if (responses.data!.isNotEmpty) {
-                                for (var item in responses.data!) {
-                                  eventPage = pageEvent(item);
+                    SliverToBoxAdapter(
+                      child: StreamBuilder<dynamic>(
+                        stream: eventDetailBloc.antDataStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            switch (snapshot.data!.status!) {
+                              case Status.initial:
+                                return shimmerEvent();
+                              case Status.loading:
+                                return shimmerEvent();
+                              case Status.completed:
+                                EventDetailModel responses = snapshot.data!.data as EventDetailModel;
+                                Widget eventPage = const SizedBox.shrink();
+                                if (responses.data!.isNotEmpty) {
+                                  for (var item in responses.data!) {
+                                    eventPage = pageEvent(item);
+                                  }
                                 }
-                              }
-                              return eventPage;
-                            case Status.errror:
-                              return const SizedBox.shrink();
+                                return eventPage;
+                              case Status.errror:
+                                return const SizedBox.shrink();
+                            }
                           }
-                        }
-                        return Container();
-                      },
+                          return Container();
+                        },
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: mediaPadding.bottom + 22,
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: mediaPadding.bottom + 22,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -5,10 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mobile/utils/networks/config/constant_config.dart';
 import 'package:mobile/utils/themes/constant.dart';
 import 'package:mobile/utils/themes/service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobile/youtube_player.dart';
+import 'package:override_text_scale_factor/override_text_scale_factor.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'modules/startup/views/splash_screen_view.dart';
@@ -63,9 +65,12 @@ class _IssiMobileState extends State<IssiMobile> {
             debugShowCheckedModeBanner: false,
             home: const SplashscreenView(),
           ),
-          UpgradeAlert(
-            upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
-          ),
+          /* OverrideTextScaleFactor(
+            textScaleFactor: ConstantConfig().textScale,
+            child: UpgradeAlert(
+              upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
+            ),
+          ), */
           //const YoutubePlayer(),
         ],
       ),
